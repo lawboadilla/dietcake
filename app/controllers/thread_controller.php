@@ -5,7 +5,21 @@ class ThreadController extends AppController
 	{
 		// TODO: Get all threads
 		$threads = Thread::getAll();
+		// $device = Cms::getAllDevice();
+
+		$adapter = new \Pagerfanta\Adapter\ArrayAdapter($threads);
+		$paginator = new \Pagerfanta\Pagerfanta($adapter);
+		$paginator->setMaxPerPage(5);
+		$paginator->setCurrentPage(Param::get('page', 1));
+		$threads = Thread::objectToarray($paginator);
+
+		$view = new \Pagerfanta\View\DefaultView();
+		$options = array('proximity' => 3, 'url' => 'card/all');
+
+		$html = $view->render($paginator, 'routeGenerator', $options);
+
 		$this->set(get_defined_vars());
+		// $this->set(get_defined_vars());
 	}
 
 	public function view()
@@ -55,17 +69,17 @@ class ThreadController extends AppController
 			case 'create':
 			break;
 			case 'create_end':
-				$thread->title = Param::get('title');
-				$comment->username = Param::get('username');
-				$comment->body = Param::get('body');
-				try {
-					$thread->create($comment);
-				} catch (ValidationException $e) {
-					$page = 'create';
-				}
+			$thread->title = Param::get('title');
+			$comment->username = Param::get('username');
+			$comment->body = Param::get('body');
+			try {
+				$thread->create($comment);
+			} catch (ValidationException $e) {
+				$page = 'create';
+			}
 			break;
 			default:
-				throw new NotFoundException("{$page} is not found");
+			throw new NotFoundException("{$page} is not found");
 			break;
 		}
 		$this->set(get_defined_vars());
@@ -88,20 +102,21 @@ class ThreadController extends AppController
 			break;
 
 			case 'register_end':
-				try {
-					$status = $thread->registerUser($username, $password);
+			try {
+				$status = $thread->registerUser($username, $password);
 
-				} catch (ValidationException $e) {
+			} catch (ValidationException $e) {
 					// $page = 'register';
-				}
+			}
 
 			break;
 
 			default:
-				throw new NotFoundException("{$page} is not found");
+			throw new NotFoundException("{$page} is not found");
 			break;
 		}
 		$this->render($page);
 		$this->set(get_defined_vars());
 	}
+
 }
