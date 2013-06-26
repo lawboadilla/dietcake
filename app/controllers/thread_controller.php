@@ -6,15 +6,15 @@ class ThreadController extends AppController
 		// TODO: Get all threads
 		$threads = Thread::getAll();
 
-		$adapter = new \Pagerfanta\Adapter\ArrayAdapter($threads);
+		$adapter   = new \Pagerfanta\Adapter\ArrayAdapter($threads);
 		$paginator = new \Pagerfanta\Pagerfanta($adapter);
 		$paginator->setMaxPerPage(5);
 		$paginator->setCurrentPage(Param::get('page', 1));
-		$threads = Thread::objectToarray($paginator);
+		$threads   = Thread::objectToarray($paginator);
 
-		$view = new \Pagerfanta\View\TwitterBootstrapView();
+		$view    = new \Pagerfanta\View\TwitterBootstrapView();
 		$options = array('proximity' => 3, 'url' => 'card/all');
-		$html = $view->render($paginator, 'routeGenerator', $options);
+		$html    = $view->render($paginator, 'routeGenerator', $options);
 
 		$this->set(get_defined_vars());
 	}
@@ -37,9 +37,8 @@ class ThreadController extends AppController
 			case 'write':
 			break;
 			case 'write_end':
-			$comment->username = Param::get('username');
-			$comment->body = Param::get('body');
-
+				$comment->username = Param::get('username');
+				$comment->body = Param::get('body');
 			try {
 				$thread->write($comment);
 			} catch (ValidationException $e) {
@@ -48,7 +47,7 @@ class ThreadController extends AppController
 
 			break;
 			default:
-			throw new NotFoundException("{$page} is not found");
+				throw new NotFoundException("{$page} is not found");
 			break;
 		}
 
@@ -66,9 +65,9 @@ class ThreadController extends AppController
 			case 'create':
 			break;
 			case 'create_end':
-			$thread->title = Param::get('title');
-			$comment->username = Param::get('username');
-			$comment->body = Param::get('body');
+				$thread->title = Param::get('title');
+				$comment->username = Param::get('username');
+				$comment->body = Param::get('body');
 			try {
 				$thread->create($comment);
 			} catch (ValidationException $e) {
@@ -87,12 +86,9 @@ class ThreadController extends AppController
 	{	
 		$thread         = new Thread;
 		$page           = Param::get('page_next', 'register');
-		// $user           = array();
+		$username       = Param::get('username');
+		$password       = Param::get('password');
 
-		$username = Param::get('username');
-		$password = Param::get('password');
-
-		// echo $page;
 		switch ($page) {
 			case 'register':
 
@@ -104,11 +100,10 @@ class ThreadController extends AppController
 				} catch (ValidationException $e) {
 					
 				}
-
 			break;
 
 			default:
-			throw new NotFoundException("{$page} is not found");
+				throw new NotFoundException("{$page} is not found");
 			break;
 		}
 		$this->render($page);
