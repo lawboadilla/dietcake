@@ -1,4 +1,5 @@
 <h2>Register Successfull!</h2>
+
 <p class="alert alert-success">
 	You successfully created an account.
 </p>

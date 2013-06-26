@@ -81,7 +81,6 @@ class Thread extends AppModel
 
 		public static function registerUser($username, $password){
 			$db     = DB::conn();
-			$status = "";
 			try {
 				$db->begin();
 				$db->query('INSERT INTO user SET user_name = ?, user_password = ?', array($username, $password));

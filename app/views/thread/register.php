@@ -1,4 +1,5 @@
 <h1>Register</h1>
+
 <form class="well" method="post" action="<?php eh(url('')) ?>">
 	<label>Your name:</label>
 	<input type="text" class="span2" name="username" value="">
