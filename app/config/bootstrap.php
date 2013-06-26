@@ -12,10 +12,12 @@ require_once VENDOR_DIR.'Pagerfanta/Adapter/ArrayAdapter.php';
 
 require_once VENDOR_DIR.'Pagerfanta/View/ViewInterface.php';
 require_once VENDOR_DIR.'Pagerfanta/View/DefaultView.php';
+require_once VENDOR_DIR.'Pagerfanta/View/TwitterBootstrapView.php';
 
 require_once VENDOR_DIR.'Pagerfanta/View/Template/TemplateInterface.php';
 require_once VENDOR_DIR.'Pagerfanta/View/Template/Template.php';
 require_once VENDOR_DIR.'Pagerfanta/View/Template/DefaultTemplate.php';
+require_once VENDOR_DIR.'Pagerfanta/View/Template/TwitterBootstrapTemplate.php';
 
 require_once VENDOR_DIR.'Pagerfanta/PagerfantaInterface.php';
 require_once VENDOR_DIR.'Pagerfanta/Pagerfanta.php';

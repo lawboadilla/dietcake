@@ -5,6 +5,8 @@
     <title>DietCake Starter</title>
 
     <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/bootstrap/css/pagination.css" rel="stylesheet">
+
     <style>
       body {
         padding-top: 60px;
@@ -23,9 +25,7 @@
     </div>
 
     <div class="container">
-
       <?php echo $_content_ ?>
-
     </div>
 
     <script>

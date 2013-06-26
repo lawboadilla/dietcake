@@ -5,7 +5,6 @@ class ThreadController extends AppController
 	{
 		// TODO: Get all threads
 		$threads = Thread::getAll();
-		// $device = Cms::getAllDevice();
 
 		$adapter = new \Pagerfanta\Adapter\ArrayAdapter($threads);
 		$paginator = new \Pagerfanta\Pagerfanta($adapter);
@@ -13,13 +12,11 @@ class ThreadController extends AppController
 		$paginator->setCurrentPage(Param::get('page', 1));
 		$threads = Thread::objectToarray($paginator);
 
-		$view = new \Pagerfanta\View\DefaultView();
+		$view = new \Pagerfanta\View\TwitterBootstrapView();
 		$options = array('proximity' => 3, 'url' => 'card/all');
-
 		$html = $view->render($paginator, 'routeGenerator', $options);
 
 		$this->set(get_defined_vars());
-		// $this->set(get_defined_vars());
 	}
 
 	public function view()
