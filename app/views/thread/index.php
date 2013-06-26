@@ -9,6 +9,13 @@
 <?php endforeach ?>
 </ul>
 
+  <div class="pagerfanta">
+
+    <?php echo $html; ?>
+
+  </div>
+
+
 <a class="btn btn-large btn-primary" href="<?php eh(url('thread/create')) ?>">Create</a>
 <a class="btn btn-large btn-primary" href="<?php eh(url('thread/register')) ?>">Register</a>
 
