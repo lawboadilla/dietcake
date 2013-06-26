@@ -72,36 +72,4 @@ class ThreadController extends AppController
 		$this->render($page);
 	}
 
-	public function register()
-	{	
-		$thread         = new Thread;
-		$page           = Param::get('page_next', 'register');
-		// $user           = array();
-
-		$username = Param::get('username');
-		$password = Param::get('password');
-
-		// echo $page;
-		switch ($page) {
-			case 'register':
-
-			break;
-
-			case 'register_end':
-				try {
-					$status = $thread->registerUser($username, $password);
-
-				} catch (ValidationException $e) {
-					// $page = 'register';
-				}
-
-			break;
-
-			default:
-				throw new NotFoundException("{$page} is not found");
-			break;
-		}
-		$this->render($page);
-		$this->set(get_defined_vars());
-	}
 }
