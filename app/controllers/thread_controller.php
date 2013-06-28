@@ -99,7 +99,7 @@ class ThreadController extends AppController
 				try {
 					$status = $thread->registerUser($username, $password);
 				} catch (ValidationException $e) {
-					
+					throw new FailedQueryException("ERROR: {$status}");
 				}
 			break;
 

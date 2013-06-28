@@ -82,7 +82,7 @@ class Thread extends AppModel
 			$db->query('INSERT INTO user SET user_name = ?, user_password = ?', array($username, $password));
 			$status = "success";
 		} catch (Exception $e) {
-			$status = "failed";
+			$status = $e;
 		
 		}
 
