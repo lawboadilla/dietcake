@@ -19,19 +19,37 @@ class Thread extends AppModel
 	public static function getAll()
 	{
 		$threads = array();
-		$db = DB::conn();
-		$rows = $db->rows('SELECT * FROM thread');
+		$db      = DB::conn();
+		$rows    = $db->rows('SELECT * FROM thread');
 		foreach ($rows as $row) {
 			$threads[] = new Thread($row);
 		}
 		return $threads;
 	}
 
+	public static function getPaginatedThread($page)
+	{	
+		$threads    = array();
+		$db         = DB::conn();
+		$total_rows = $db->rows("SELECT count(*) FROM thread");
+
+		$page_limit = 5;
+		$offset     = $page * $page_limit;
+		$paginated  = $db->rows("SELECT * FROM thread LIMIT $page, $page_limit");
+
+		foreach ($paginated as $row) {
+			$threads[] = new Thread($row);
+		}
+
+		return $threads;
+	}
+
+
 	public function getComments()
 	{
 		$comments = array();
-		$db = DB::conn();
-		$rows = $db->rows('SELECT * FROM comment WHERE thread_id = ? ORDER BY created ASC LIMIT 20', array($this->id));
+		$db       = DB::conn();
+		$rows     = $db->rows('SELECT * FROM comment WHERE thread_id = ? ORDER BY created ASC LIMIT 20', array($this->id));
 		foreach ($rows as $row) {
 			$comments[] = new Comment($row);
 		}
@@ -42,8 +60,8 @@ class Thread extends AppModel
 	public function getTestComments()
 	{
 		$comments = array();
-		$db = DB::conn();
-		$rows = $db->rows('SELECT * FROM comment WHERE thread_id = ? ORDER BY created ASC LIMIT 20', array($this->id));
+		$db       = DB::conn();
+		$rows     = $db->rows('SELECT * FROM comment WHERE thread_id = ? ORDER BY created ASC LIMIT 20', array($this->id));
 		foreach ($rows as $row) {
 			$comments[] = new Comment($row);
 		}
@@ -65,9 +83,11 @@ class Thread extends AppModel
 	{
 		$this->validate();
 		$comment->validate();
-			if ($this->hasError() || $comment->hasError()) {
-				throw new ValidationException('invalid thread or comment');
-			}
+
+		if ($this->hasError() || $comment->hasError()) {
+			throw new ValidationException('invalid thread or comment');
+		}
+
 		$db = DB::conn();
 		$db->begin();
 		$db->query('INSERT INTO thread SET title = ?, created = NOW()', array($this->title));
@@ -78,12 +98,13 @@ class Thread extends AppModel
 
 	public static function registerUser($username, $password){
 		$db     = DB::conn();
+		$status = "";
+
 		try {
 			$db->query('INSERT INTO user SET user_name = ?, user_password = ?', array($username, $password));
 			$status = "success";
-		} catch (Exception $e) {
-			$status = $e;
-		
+		} catch (PDOException $e) {
+			$status =  $e->getMessage();
 		}
 
 		return $status;

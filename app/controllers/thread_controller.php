@@ -21,7 +21,7 @@ class ThreadController extends AppController
 
 	public function view()
 	{
-		$thread = Thread::get(Param::get('thread_id'));
+		$thread   = Thread::get(Param::get('thread_id'));
 		$comments = $thread->getTestComments();
 		$this->set(get_defined_vars());
 	}
@@ -29,13 +29,14 @@ class ThreadController extends AppController
 
 	public function write()
 	{
-		$thread = Thread::get(Param::get('thread_id'));
+		$thread  = Thread::get(Param::get('thread_id'));
 		$comment = new Comment;
-		$page = Param::get('page_next', 'write');
+		$page    = Param::get('page_next', 'write');
 
 		switch ($page) {
 			case 'write':
-			break;
+				break;
+
 			case 'write_end':
 				$comment->username = Param::get('username');
 				$comment->body = Param::get('body');
@@ -44,11 +45,11 @@ class ThreadController extends AppController
 				} catch (ValidationException $e) {
 					$page = 'write';
 				}
+				break;
 
-			break;
 			default:
 				throw new NotFoundException("{$page} is not found");
-			break;
+				break;
 		}
 
 		$this->set(get_defined_vars());
@@ -61,24 +62,27 @@ class ThreadController extends AppController
 		$thread = new Thread;
 		$comment = new Comment;
 		$page = Param::get('page_next', 'create');
+
 		switch ($page) {
 			case 'create':
-			break;
+				break;
+
 			case 'create_end':
 				$thread->title = Param::get('title');
 				$comment->username = Param::get('username');
 				$comment->body = Param::get('body');
-				
 				try {
 					$thread->create($comment);
 				} catch (ValidationException $e) {
 					$page = 'create';
 				}
-			break;
+				break;
+
 			default:
 				throw new NotFoundException("{$page} is not found");
-			break;
+				break;
 		}
+		
 		$this->set(get_defined_vars());
 		$this->render($page);
 	}
@@ -91,22 +95,22 @@ class ThreadController extends AppController
 		$password       = Param::get('password');
 
 		switch ($page) {
-			case 'register':
-
-			break;
+			case 'register': //this is a fallthrough :)
+				break;
 
 			case 'register_end':
 				try {
 					$status = $thread->registerUser($username, $password);
 				} catch (ValidationException $e) {
-					throw new FailedQueryException("ERROR: {$status}");
+					echo $e->getMessage();
 				}
-			break;
+				break;
 
 			default:
 				throw new NotFoundException("{$page} is not found");
 			break;
 		}
+
 		$this->render($page);
 		$this->set(get_defined_vars());
 	}
